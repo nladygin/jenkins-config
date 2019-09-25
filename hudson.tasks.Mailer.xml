@@ -1,0 +1,10 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<hudson.tasks.Mailer_-DescriptorImpl plugin="mailer@1.23">
+  <smtpAuthUsername>jenkins.info@mail.ru</smtpAuthUsername>
+  <smtpAuthPassword>{AQAAABAAAAAQnHK7ooMbyEK4qU1p4EbQ8NJxvxdb8ZKTql8VSO2FVZU=}</smtpAuthPassword>
+  <replyToAddress>jenkins.info@mail.ru</replyToAddress>
+  <smtpHost>smtp.mail.ru</smtpHost>
+  <useSsl>true</useSsl>
+  <smtpPort>465</smtpPort>
+  <charset>UTF-8</charset>
+</hudson.tasks.Mailer_-DescriptorImpl>
