@@ -1,9 +1,11 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <hudson.plugins.scm__sync__configuration.ScmSyncConfigurationPlugin version="1">
   <scm class="hudson.plugins.scm_sync_configuration.scms.ScmSyncGitSCM"/>
-  <scmRepositoryUrl>scm:git:https://github.com/nladygin/jenkins-config.git</scmRepositoryUrl>
+  <scmRepositoryUrl>scm:git:https://f44c3f89fd68115bb7b300d3c3775f15db1a63e6@github.com/nladygin/jenkins-config.git</scmRepositoryUrl>
   <noUserCommitMessage>true</noUserCommitMessage>
   <displayStatus>true</displayStatus>
   <commitMessagePattern>[message]</commitMessagePattern>
-  <manualSynchronizationIncludes/>
+  <manualSynchronizationIncludes>
+    <include>jobs/*/config.xml</include>
+  </manualSynchronizationIncludes>
 </hudson.plugins.scm__sync__configuration.ScmSyncConfigurationPlugin>
