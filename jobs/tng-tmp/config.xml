@@ -1,0 +1,108 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<maven2-moduleset plugin="maven-plugin@3.2">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>100</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+  </properties>
+  <scm class="hudson.scm.SubversionSCM" plugin="subversion@2.12.1">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>svn://192.168.1.73/clubng/tng3/tags/3.2.1</remote>
+        <credentialsId></credentialsId>
+        <local>.</local>
+        <depthOption>infinity</depthOption>
+        <ignoreExternalsOption>true</ignoreExternalsOption>
+        <cancelProcessOnExternalsFail>true</cancelProcessOnExternalsFail>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <excludedRegions></excludedRegions>
+    <includedRegions></includedRegions>
+    <excludedUsers></excludedUsers>
+    <excludedRevprop></excludedRevprop>
+    <excludedCommitMessages></excludedCommitMessages>
+    <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+    <ignoreDirPropChanges>false</ignoreDirPropChanges>
+    <filterChangelog>false</filterChangelog>
+    <quietOperation>false</quietOperation>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <rootModule>
+    <groupId>ru.hrs.lassd.club.vaadin.sample</groupId>
+    <artifactId>Heap</artifactId>
+  </rootModule>
+  <goals>clean install</goals>
+  <aggregatorStyleBuild>true</aggregatorStyleBuild>
+  <incrementalBuild>false</incrementalBuild>
+  <ignoreUpstremChanges>false</ignoreUpstremChanges>
+  <ignoreUnsuccessfulUpstreams>false</ignoreUnsuccessfulUpstreams>
+  <archivingDisabled>false</archivingDisabled>
+  <siteArchivingDisabled>false</siteArchivingDisabled>
+  <fingerprintingDisabled>false</fingerprintingDisabled>
+  <resolveDependencies>false</resolveDependencies>
+  <processPlugins>false</processPlugins>
+  <mavenValidationLevel>-1</mavenValidationLevel>
+  <runHeadless>false</runHeadless>
+  <disableTriggerDownstreamProjects>false</disableTriggerDownstreamProjects>
+  <blockTriggerWhenBuilding>true</blockTriggerWhenBuilding>
+  <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+  <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
+  <reporters/>
+  <publishers/>
+  <buildWrappers/>
+  <prebuilders>
+    <hudson.tasks.BatchFile>
+      <command>@echo off &#xd;
+chcp 65001&#xd;
+&#xd;
+SET TNG_SERVICE=Tomcat8&#xd;
+setlocal &#xd;
+set do=-1 &#xd;
+&#xd;
+for /f &quot;tokens=1,4&quot; %%i in (&apos;sc.exe query %TNG_SERVICE%&apos;) do ( &#xd;
+    if &quot;%%i&quot;==&quot;STATE&quot; ( &#xd;
+        if &quot;%%j&quot;==&quot;RUNNING&quot; (set do=0) else (set do=1) &#xd;
+    ) &#xd;
+) &#xd;
+if %do% EQU 1 echo %TNG_SERVICE% is NOT running! &#xd;
+if %do% EQU 0 net stop %TNG_SERVICE%&#xd;
+if %do% EQU -1 echo %TNG_SERVICE% state unknown.</command>
+    </hudson.tasks.BatchFile>
+  </prebuilders>
+  <postbuilders>
+    <hudson.tasks.BatchFile>
+      <command>chcp 65001&#xd;
+SET SRC_DIR=D:\jenkins\jobs\tng-tmp&#xd;
+SET TARGET_DIR=D:\jenkins\workspace\tng-tmp\target&#xd;
+SET TOMCAT_PATH=d:\tomcat&#xd;
+SET TNG_SERVICE=Tomcat8&#xd;
+&#xd;
+rmdir /s /q %TOMCAT_PATH%\webapps\ROOT&#xd;
+del /q %TOMCAT_PATH%\webapps\tng3.war&#xd;
+copy %TARGET_DIR%\tng3.war %TOMCAT_PATH%\webapps&#xd;
+&#xd;
+rem sqlplus club/hrs @%SRC_DIR%\usr_scripts\sql.sql&#xd;
+&#xd;
+net start %TNG_SERVICE%</command>
+    </hudson.tasks.BatchFile>
+  </postbuilders>
+  <runPostStepsIfResult>
+    <name>SUCCESS</name>
+    <ordinal>0</ordinal>
+    <color>BLUE</color>
+    <completeBuild>true</completeBuild>
+  </runPostStepsIfResult>
+</maven2-moduleset>
